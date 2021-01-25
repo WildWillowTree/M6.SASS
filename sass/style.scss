@@ -1,0 +1,140 @@
+//Variables
+$font:'Lato', sans-serif;
+$font-size: 1.2em;
+$width: 100%;
+$height:100%;
+$color:white;
+$colors: (1:#244F75, 2:#60BFBF, 3:#8C4B7E, 4:#F8BB44, 5:#F24B4B);
+
+//mixins
+@mixin backgroundEffect ($background){
+    background-color: $background;
+}
+@mixin  animation ($delay, $name, $timing:ease, $duration:.7s, $fill:both){
+    -webkit-animation-delay: $delay;
+    -webkit-animation-name: $name;
+    -webkit-animation-timing-function: $timing;    
+    -webkit-animation-duration: $duration;
+    -webkit-animation-fill-mode: $fill;
+
+    animation-delay: $delay;
+    animation-name: $name;
+    animation-timing-function: $timing;   
+    animation-duration: $duration;
+    animation-fill-mode: $fill;
+}
+@mixin transformEffect($property){
+    -webkit-transform: $property;
+    transform: $property;
+}
+@mixin transitionEffect($seconds){
+    transition: all $seconds cubic-bezier(0.23, 1, 0.32, 1);
+}
+//each stripes
+@each $key, $value in $colors {
+    .stripes:nth-child(#{$key}){
+        @include backgroundEffect($value);
+        @include animation(#{$key * 0.1}s, stripe#{$key})
+        }
+} 
+/*General*/
+*{
+    margin: 0;
+    padding: 0;
+    width: $width;
+    height: $height;
+}
+body{
+    font-family: $font;
+    font-size: $font-size; 
+    font-weight: lighter;
+}
+/*ORDRE I APARENÇA*/
+.stripes-content{
+    display: flex;
+    flex-direction: row;
+    .stripes{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: $width/5;
+        overflow: hidden; 
+        .diagonal-stripes{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            width: $width;
+            &:before {
+                content: "";
+                position: relative;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                width: $width;
+                height: $height;
+                background: $color;
+                opacity: 0.06;            
+                transform-origin: center center;
+                -webkit-transform-origin: center center; 
+                @include transformEffect(skew(30deg) scaleY(1) translate(0, 0)); 
+                @include transitionEffect(0.6s);     
+            }
+            &:hover:before{    
+                @include transformEffect(skew(15deg) scaleY(1.5) scaleX(2) translate(0, 0));
+                @include transitionEffect(0.2s);
+            }
+            .text{
+                height: auto;                
+                width: auto;
+                text-align: center;
+                color: $color;
+                align-self: center;
+                position: absolute;
+                z-index: 0;
+            }
+        }
+    }
+}
+//animacions
+@keyframes stripe1{        
+    0%{
+        @include transformEffect(translate3d(-100%, 0, 0));
+    }
+    100%{
+        @include transformEffect(translate3d(0, 0, 0));
+    }
+}
+@keyframes stripe2{
+    0%{
+        @include transformEffect(translate3d(0, 100%, 0));
+    }
+    100%{
+        @include transformEffect(translate3d(0, 0, 0));
+    }
+}
+@keyframes stripe3{
+    0%{
+        @include transformEffect(translate3d(0, -150%, 0));
+    }
+    100%{
+        @include transformEffect(translate3d(0, 0, 0));
+    }
+}
+@keyframes stripe4{
+    0%{
+        @include transformEffect(translate3d(0, 250%, 0));
+    }
+    100%{
+        @include transformEffect(translate3d(0, 0, 0));
+    }
+}
+@keyframes stripe5{
+    0%{
+        @include transformEffect(translate3d(350%, 0, 0));
+    }
+    100%{
+        @include transformEffect(translate3d(0, 0, 0));
+    }
+}
+
+
